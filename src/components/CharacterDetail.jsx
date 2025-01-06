@@ -1,17 +1,19 @@
 import Proptypes from "prop-types";
 import { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useParams, useLocation } from "react-router-dom";
 import api from "../services/api";
+import Character from "./Character";
 
 function CharacterDetail() {
   const { id } = useParams();
-  const [characterDetails, setCharacterDetails] = useState([]);
+  const [characterDetails, setCharacterDetails] = useState({});
 
   const fetchCharacterDetails = async () => {
     await api
       .get(`/character/${id}`)
       .then((response) => {
-        setCharacterDetails(response.data);
+        const data = response.data;
+        setCharacterDetails(data);
       })
       .catch((error) => {
         console.error(error);
@@ -20,23 +22,16 @@ function CharacterDetail() {
 
   useEffect(() => {
     fetchCharacterDetails();
-  });
+  }, [id]);
 
   return (
-    <div className="text-center p-5">
-      <h3>{characterDetails.name}</h3>
-      <img
-        src={characterDetails.image}
-        alt={characterDetails.name}
-        className="img-fluid rounded"
-      />
-      <p>{characterDetails.gender}</p>
-      <p>{characterDetails.status}</p>
-      <p>{characterDetails.species}</p>
-      {/* <p>{characterDetails.origin.name}</p> */}
-      <div>
+    <div className="container" style={{ width: "25%" }}>
+      <Character character={characterDetails} detail={1} />
+      <div className="text-center">
         {/* <p>{characterDetails.location.name}</p> */}
-        <NavLink to="/">Volver</NavLink>
+        <NavLink to="/" className="nes-btn is-error p-regular">
+          Volver
+        </NavLink>
       </div>
     </div>
   );
@@ -45,5 +40,6 @@ function CharacterDetail() {
 export default CharacterDetail;
 
 CharacterDetail.propTypes = {
-  character: Proptypes.object.isRequired,
+  character: Proptypes.object,
+  detail: Proptypes.number,
 };
