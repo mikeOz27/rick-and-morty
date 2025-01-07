@@ -1,6 +1,6 @@
 import Proptypes from "prop-types";
 import { useEffect, useState } from "react";
-import { NavLink, useParams, useLocation } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import api from "../services/api";
 import Character from "./Character";
 
