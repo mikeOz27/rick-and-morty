@@ -38,15 +38,15 @@ function CharacterList() {
           </div>
         ) : (
           <>
-           <NavPages page={page} setPage={setPage} pages={pages} />
-           {characters.map((character) => (
-             <div
-               className="col-md-4 animate__animated animate__bounceInUp"
-               key={character.id}
-             >
-               <Character character={character} page={page} detail={detail} />
-             </div>
-           ))}
+            <NavPages page={page} setPage={setPage} pages={pages} />
+            {characters.map((character) => (
+              <div
+                className="col-md-4 animate__animated animate__fadeIn"
+                key={character.id}
+              >
+                <Character character={character} page={page} detail={detail} />
+              </div>
+            ))}
             <NavPages page={page} setPage={setPage} pages={pages} />
           </>
         )}
