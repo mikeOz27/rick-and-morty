@@ -33,7 +33,7 @@ function CharacterList() {
       setTimeout(() => {
         api
           .get(
-            `/character/?name=${filter}&status=${selectStatus}&page=${page}`
+            `/character/?name=${filter}&status=${selectStatus}`
           )
           .then((response) => {
             const data = response.data;
@@ -68,6 +68,7 @@ function CharacterList() {
           <div className="nes-select is-dark">
             <select required id="default_select" onChange={search} defaultValue="">
               <option value="" disabled>Selection status</option>
+              <option value="">All</option>
               <option value="Alive">Alive</option>
               <option value="Dead">Dead</option>
             </select>
