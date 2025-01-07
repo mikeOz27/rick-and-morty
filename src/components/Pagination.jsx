@@ -21,6 +21,7 @@ export function NavPages(props) {
   function start() {
     console.log("Start Page");
     getCharacter();
+    setPage(1);
     setFilter("");
     document.getElementById("default_select").value = "";
   }

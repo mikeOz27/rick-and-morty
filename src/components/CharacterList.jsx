@@ -12,6 +12,9 @@ function CharacterList() {
   const [detail, setDetail] = useState(1);
   const [filter, setFilter] = useState("");
 
+  const [nextPage, setNextPage] = useState(1);
+  const [prevPage, setPrevPage] = useState(null);
+
   const getCharacter = async () => {
     await api
       .get(`/character/?page=${page}`)
@@ -33,12 +36,16 @@ function CharacterList() {
       setTimeout(() => {
         api
           .get(
-            `/character/?name=${filter}&status=${selectStatus}`
+            `/character/?name=${filter}&status=${selectStatus}&page=${page}`
           )
           .then((response) => {
             const data = response.data;
             setCharacters(data.results);
             setPages(data.info.pages);
+
+            setNextPage(data.info.next);
+            setPrevPage(data.info.prev);
+
           });
       }, 100);
     } else if (filter.trim() === "") {
@@ -66,11 +73,19 @@ function CharacterList() {
         </div>
         <div className="col-md-6">
           <div className="nes-select is-dark">
-            <select required id="default_select" onChange={search} defaultValue="">
-              <option value="" disabled>Selection status</option>
+            <select
+              required
+              id="default_select"
+              onChange={search}
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Selection status
+              </option>
               <option value="">All</option>
               <option value="Alive">Alive</option>
               <option value="Dead">Dead</option>
+              <option value="unknown">Unknown</option>
             </select>
           </div>
         </div>
@@ -88,6 +103,9 @@ function CharacterList() {
               pages={pages}
               getCharacter={getCharacter}
               setFilter={setFilter}
+
+              nextPage={nextPage}
+              prevPage={prevPage}
             />
             {characters.map((character) => (
               <div
@@ -97,7 +115,15 @@ function CharacterList() {
                 <Character character={character} page={page} detail={detail} />
               </div>
             ))}
-            <NavPages page={page} setPage={setPage} pages={pages} />
+            <NavPages 
+              page={page} 
+              setPage={setPage} 
+              pages={pages} 
+              getCharacter={getCharacter} 
+              setFilter={setFilter} 
+              nextPage={nextPage}
+              prevPage={prevPage}
+            />
           </>
         )}
       </div>
