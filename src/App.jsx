@@ -10,7 +10,7 @@ function App() {
       <h1 className="text-center display-1 py-4 press-start-2p-regular animate__animated animate__bounceInDown">
         Rick adn Morty
       </h1>
-      <BR>
+      <BR basename="/rick-and-morty-react/">
         <Routes>
           <Route path="/" element={<CharacterList />} />
           <Route path="/character/:id" element={<CharacterDetail />} />
