@@ -1,7 +1,7 @@
 import Porptypes from "prop-types";
 
 export function NavPages(props) {
-  const { page, setPage, pages } = props;
+  const { page, setPage, pages, getCharacter, setFilter } = props;
 
   function prevPage() {
     console.log("Prev Page");
@@ -20,7 +20,9 @@ export function NavPages(props) {
   }
   function start() {
     console.log("Start Page");
-    setPage(1);
+    getCharacter();
+    setFilter("");
+    document.getElementById("default_select").value = "";
   }
 
   return (
@@ -57,4 +59,6 @@ NavPages.propTypes = {
   page: Porptypes.number,
   setPage: Porptypes.func.isRequired,
   pages: Porptypes.number,
+  getCharacter: Porptypes.func,
+  setFilter: Porptypes.func,
 };
