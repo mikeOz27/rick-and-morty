@@ -11,7 +11,10 @@ function App() {
         <h1 className="text-center display-1 py-4 press-start-2p-regular animate__animated animate__bounceInDown">
           Rick and Morty
         </h1>
-        <Link to="/episodes" className="justify-content-center d-flex">Episodes</Link>
+        <nav className="d-flex justify-content-center">
+          <Link to="/" className="justify-content-center d-flex nes-btn">Characters</Link>
+        <Link to="/episodes" className="justify-content-center d-flex nes-btn">Episodes</Link>
+        </nav>
         <br />
         <Routes>
           <Route path="/" element={<CharacterList />} />

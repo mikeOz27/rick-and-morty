@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import api from '../services/api'
 import { Navigate } from './Navigate';
+import { Link } from 'react-router';
 
 function Episode() {
 
@@ -60,6 +61,7 @@ function Episode() {
               <Navigate page={page} setPage={setPage} pages={pages} />
             </div>
           )}
+          <Link to="/" className="nes-btn p-regular">volver</Link>
         </div>
       </div>
     </>

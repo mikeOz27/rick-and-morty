@@ -17,7 +17,7 @@ function CharacterList() {
       search(filter, page, status, gender);
     }
   };
-  
+
 
   useEffect(() => {
     search(filter, page, status, gender);
@@ -26,6 +26,8 @@ function CharacterList() {
 
   return (
     <div className="container bg-dark text-primary">
+      <h1 className="d-flex justify-content-center">Characters</h1>
+      <br />
       <div className="row">
         <div className="col-md-4">
           <input
