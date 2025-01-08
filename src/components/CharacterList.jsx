@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import Character from "./Character";
 import Proptype from "prop-types";
-import api from "../services/api";
 import { NavPages } from "./Pagination";
+import { getCharacters } from "../services/api";
 
 function CharacterList() {
   const [characters, setCharacters] = useState([]);
@@ -12,21 +12,9 @@ function CharacterList() {
   const [detail, setDetail] = useState(1);
   const [filter, setFilter] = useState("");
 
-  const [nextPage, setNextPage] = useState(1);
-  const [prevPage, setPrevPage] = useState(null);
-
   const getCharacter = async () => {
-    await api
-      .get(`/character/?page=${page}`)
-      .then((response) => {
-        const data = response.data;
-        setCharacters(data.results);
-        setPages(data.info.pages);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    const selectStatus = document.getElementById("default_select").value;
+    await getCharacters(page, filter, selectStatus, setCharacters, setPages, setLoading);
   };
 
   //FUNCION BUSCAR
@@ -34,19 +22,7 @@ function CharacterList() {
     const selectStatus = document.getElementById("default_select").value;
     if (event.keyCode === 13 || event.type === "change") {
       setTimeout(() => {
-        api
-          .get(
-            `/character/?name=${filter}&status=${selectStatus}&page=${page}`
-          )
-          .then((response) => {
-            const data = response.data;
-            setCharacters(data.results);
-            setPages(data.info.pages);
-
-            setNextPage(data.info.next);
-            setPrevPage(data.info.prev);
-
-          });
+        getCharacters(page, filter, selectStatus, setCharacters, setPages, setLoading);
       }, 100);
     } else if (filter.trim() === "") {
       getCharacter(); // Restaura la lista original si no hay filtro
@@ -102,10 +78,8 @@ function CharacterList() {
               setPage={setPage}
               pages={pages}
               getCharacter={getCharacter}
+              setCharacters={setCharacters}
               setFilter={setFilter}
-
-              nextPage={nextPage}
-              prevPage={prevPage}
             />
             {characters.map((character) => (
               <div
@@ -115,14 +89,13 @@ function CharacterList() {
                 <Character character={character} page={page} detail={detail} />
               </div>
             ))}
-            <NavPages 
-              page={page} 
-              setPage={setPage} 
-              pages={pages} 
-              getCharacter={getCharacter} 
-              setFilter={setFilter} 
-              nextPage={nextPage}
-              prevPage={prevPage}
+            <NavPages
+              page={page}
+              setPage={setPage}
+              pages={pages}
+              getCharacter={getCharacter}
+              setCharacters={setCharacters}
+              setFilter={setFilter}
             />
           </>
         )}

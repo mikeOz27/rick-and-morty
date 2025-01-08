@@ -61,6 +61,9 @@
 
 .card {
   transition: transform 0.3s ease-in-out;
+  background-color: #77889921 !important;
+  color: white !important;
+  text-decoration: none !important;
   /* Opcional: cambia el cursor para indicar interactividad */
 }
 

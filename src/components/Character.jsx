@@ -9,7 +9,7 @@ function Character({character, detail}) {
         className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
         state={{ detail }}
       >
-        <div className="card nes-container mb-4 ">
+        <div className="card nes-container mb-4">
           <div className="image-container is-dark with-title ">
             <img
               src={character.image}
@@ -19,7 +19,6 @@ function Character({character, detail}) {
           </div>
           <div className="card-body text-center p-regular is-rounded">
             <h5 className="card-title">{character.name}</h5>
-            <span>{character.status}</span>
           </div>
           {detail === 0 ? (
             <h2></h2>
