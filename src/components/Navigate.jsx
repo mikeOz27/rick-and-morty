@@ -1,6 +1,7 @@
 import Porptypes from "prop-types";
 import { useState } from "react";
-export function NavPages(props) {
+
+export function Navigate(props) {
   const { page, setPage, pages, getCharacter, setFilter } = props;
   const [constClass, setConstClass] = useState("is-error");
 
@@ -72,7 +73,7 @@ export function NavPages(props) {
   );
 }
 
-NavPages.propTypes = {
+Navigate.propTypes = {
   page: Porptypes.number,
   setPage: Porptypes.func.isRequired,
   pages: Porptypes.number,

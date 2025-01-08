@@ -1,58 +1,51 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Character from "./Character";
 import Proptype from "prop-types";
-import { NavPages } from "./Pagination";
-import { getCharacters } from "../services/api";
+import { Navigate } from "./Navigate";
+import { useSearch } from "../hooks/useSearch";
 
 function CharacterList() {
-  const [characters, setCharacters] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [pages, setPages] = useState(0);
-  const [detail, setDetail] = useState(1);
   const [filter, setFilter] = useState("");
+  const [status, setStatus] = useState("");
+  const [gender, setGender] = useState("");
+  const [detail, setDetail] = useState(1);
 
-  const getCharacter = async () => {
-    const selectStatus = document.getElementById("default_select").value;
-    await getCharacters(page, filter, selectStatus, setCharacters, setPages, setLoading);
-  };
+  const { characters, loading, page, setPage, pages, search } = useSearch();
 
-  //FUNCION BUSCAR
-  const search = async (event) => {
-    const selectStatus = document.getElementById("default_select").value;
+  const handleSearch = (event) => {
     if (event.keyCode === 13 || event.type === "change") {
-      setTimeout(() => {
-        getCharacters(page, filter, selectStatus, setCharacters, setPages, setLoading);
-      }, 100);
-    } else if (filter.trim() === "") {
-      getCharacter(); // Restaura la lista original si no hay filtro
+      search(filter, page, status, gender);
     }
   };
+  
 
   useEffect(() => {
-    getCharacter();
+    search(filter, page, status, gender);
     setDetail(0);
-  }, [page]);
+  }, [page, gender, status]);
 
   return (
-    <div className="container bg-dark text-primary ">
+    <div className="container bg-dark text-primary">
       <div className="row">
-        <div className="col-md-6">
+        <div className="col-md-4">
           <input
             type="text"
             onChange={(e) => setFilter(e.target.value)}
             placeholder="Search Character"
-            onKeyUpCapture={search}
+            onKeyUpCapture={handleSearch}
             value={filter}
             className="nes-input is-dark"
           />
         </div>
-        <div className="col-md-6">
+        <div className="col-md-4">
           <div className="nes-select is-dark">
             <select
               required
-              id="default_select"
-              onChange={search}
+              id="status"
+              onChange={(e) => {
+                setStatus(e.target.value);
+                handleSearch(e);
+              }}
               defaultValue=""
             >
               <option value="" disabled>
@@ -65,6 +58,28 @@ function CharacterList() {
             </select>
           </div>
         </div>
+        <div className="col-md-4">
+          <div className="nes-select is-dark">
+            <select
+              required
+              id="gender"
+              onChange={(e) => {
+                setGender(e.target.value);
+                handleSearch(e);
+              }}
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Selection gender
+              </option>
+              <option value="">All</option>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+              <option value="genderless">Genderless</option>
+              <option value="unknown">Unknown</option>
+            </select>
+          </div>
+        </div>
       </div>
       <div className="row">
         {loading ? (
@@ -72,32 +87,33 @@ function CharacterList() {
             <p className="title press-start-2p-regular">Loading...</p>
           </div>
         ) : (
-          <>
-            <NavPages
-              page={page}
-              setPage={setPage}
-              pages={pages}
-              getCharacter={getCharacter}
-              setCharacters={setCharacters}
-              setFilter={setFilter}
-            />
-            {characters.map((character) => (
+          <div className="row">
+            {characters.length > 0 ? (
+              <>
+                <Navigate page={page} setPage={setPage} pages={pages} />
+                {characters.map((character) => (
+                  <div
+                    className="col-md-4 animate__animated animate__fadeIn"
+                    key={character.id}
+                  >
+                    <Character
+                      character={character}
+                      page={page}
+                      detail={detail}
+                    />
+                  </div>
+                ))}
+                <Navigate page={page} setPage={setPage} pages={pages} />
+              </>
+            ) : (
               <div
-                className="col-md-4 animate__animated animate__fadeIn"
-                key={character.id}
+                className="text-center mb-4 p-20"
+                style={{ margin: "20% auto" }}
               >
-                <Character character={character} page={page} detail={detail} />
+                <p className="title press-start-2p-regular">No results found</p>
               </div>
-            ))}
-            <NavPages
-              page={page}
-              setPage={setPage}
-              pages={pages}
-              getCharacter={getCharacter}
-              setCharacters={setCharacters}
-              setFilter={setFilter}
-            />
-          </>
+            )}
+          </div>
         )}
       </div>
     </div>
