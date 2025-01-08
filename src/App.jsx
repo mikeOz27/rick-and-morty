@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <h1 className="text-center display-1 py-4 press-start-2p-regular animate__animated animate__bounceInDown">
-        Rick adn Morty
+        Rick and Morty
       </h1>
       <BR basename="/rick-and-morty-react/">
         <Routes>
